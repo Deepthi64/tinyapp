@@ -29,12 +29,32 @@ app.get("/urls/new", (req, res) => {
   res.render("urls_new");
 });
 app.get("/urls/:id", (req, res) => {
-  const templateVars = { id: req.params.id, longURL: "http://www.lighthouselabs.ca" }
+  const templateVars = { id: req.params.id, longURL:  urlDatabase[req.params.id] };
   res.render("urls_show", templateVars);
 });
+//app.get("/urls/:id", (req, res) => {
+  //const templateVars = { id: req.params.id, longURL: "http://www.google.com" }
+  //res.render("urls_show", templateVars);
+//});
+app.post("/urls", (req, res) => {
+ const longURL = req.body.longURL;
+  const shortURL = generateRandomString();
+  urlDatabase[shortURL] = longURL; // Log the POST request body to the console
+  res.redirect(302, `/urls/${shortURL}`);
+  //res.status(200).send(`Short URL created: ${shortURL}`); // Respond with 'Ok' (we will replace this)
+});
 app.get("/urls/:id", (req, res) => {
-  const templateVars = { id: req.params.id, longURL: "http://www.google.com" }
-  res.render("urls_show", templateVars);
+  const shortURL = req.params.id;
+  const longURL = urlDatabase[shortURL];
+  res.redirect(longURL);
+});
+app.get("/urls/:shortURL", (req, res) => {
+  const longURL = urlDatabase[req.params.shortURL];
+  if (!longURL) {
+    res.sendStatus(404);
+  } else {
+    res.redirect(301, longURL);
+  }
 });
 
 app.listen(port, () => {
