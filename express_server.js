@@ -8,9 +8,12 @@ const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
   "9sm5xK": "http://www.google.com"
 };
-app.get("/urls.json", (req,res) => {
-  res.send( res.send("<html><body>Hello <b>World</b></body></html>\n"));
-});
+
+app.get("/urls", (req,res) => {
+  const urls = {  greeting: "urls_index" };
+    res.render("urls_index", { urls });
+  }
+);
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}!`);
 });
