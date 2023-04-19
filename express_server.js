@@ -10,10 +10,20 @@ const urlDatabase = {
 };
 
 app.get("/urls", (req,res) => {
-  const urls = {  greeting: "urls_index" };
-    res.render("urls_index", { urls });
-  }
-);
+  const urls = {
+    b2xVn2: "http://www.lighthouselabs.ca",
+    "9sm5xK": "http://www.google.com"
+  };
+  res.render("urls_index", { urls });
+});
+app.get("/urls/:id", (req, res) => {
+  const templateVars = { id: req.params.id, longURL: "http://www.lighthouselabs.ca" }
+  res.render("urls_show", templateVars);
+});
+app.get("/urls/:id", (req, res) => {
+  const templateVars = { id: req.params.id, longURL: "http://www.google.com" }
+  res.render("urls_show", templateVars);
+});
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}!`);
 });
