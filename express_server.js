@@ -3,7 +3,9 @@ const app = express();
 const port = 3000;
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
-
+//const urlsRouter = require('./routes/urls');
+//app.use(cookieParser());
+//app.use('/urls', urlsRouter);
 
 function generateRandomString() {
   const chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -18,6 +20,11 @@ const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
   "9sm5xK": "http://www.google.com"
 };
+app.post('/login', (req, res) => {
+  const { username } = req.body;
+  res.cookie('username', username);
+  res.redirect('/urls');
+});
 app.get("/u/:shortURL", (req, res) => {
   const shortURL = req.params.shortURL;
   const longURL = urlDatabase[shortURL];
@@ -30,6 +37,7 @@ app.get("/u/:shortURL", (req, res) => {
 app.get("/urls", (req, res) => {
   res.render("urls_index", { urls: urlDatabase });
 });
+
 
 app.get("/urls/new", (req, res) => {
   res.render("urls_new");
@@ -59,10 +67,6 @@ app.post("/urls/:shortURL/update", (req, res) => {
   } else {
     const newLongURL = req.body.longURL;
     urlDatabase[shortURL] = newLongURL;
-   // console.log(`old url is set to: ${urlDatabase[shortURL].longURL}`);
-    console.log(`newLongURL is set to : ${newLongURL}`);
-    console.log(`shortURL is set to: ${shortURL}`);
-    console.log("url database", urlDatabase);
     res.redirect("/urls");
   }
 });
