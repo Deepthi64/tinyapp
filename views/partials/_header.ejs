@@ -5,6 +5,9 @@
       <form method="POST" action="/login">
         <input type="text" name="username" placeholder="Username">
         <button type="submit">Login</button>
+        <% if (username) { %>
+          <p class="navbar-text ml-auto">Logged in as <%= username %></p>
+        <% } %>
       </form>
      </li>
        <%  %>
