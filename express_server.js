@@ -17,7 +17,15 @@ const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
   "9sm5xK": "http://www.google.com"
 };
-
+app.get("/u/:shortURL", (req, res) => {
+  const shortURL = req.params.shortURL;
+  const longURL = urlDatabase[shortURL];
+  if (!longURL) {
+    res.sendStatus(404);
+  } else {
+    res.redirect(longURL);
+  }
+});
 app.get("/urls", (req, res) => {
   res.render("urls_index", { urls: urlDatabase });
 });
@@ -45,12 +53,14 @@ app.post("/urls/:longURL/delete", (req, res) => {
 app.get("/urls/:shortURL", (req, res) => {
   const shortURL = req.params.shortURL;
   const longURL = urlDatabase[shortURL];
+  const templateVars = {longURL, id:shortURL}
   if (!longURL) {
     res.sendStatus(404);
   } else {
-    res.redirect(longURL);
+    res.render("urls_show", templateVars);
   }
 });
+
 
 
 
