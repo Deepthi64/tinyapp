@@ -49,12 +49,16 @@
           </tr>
         </thead>
         <tbody>
-          <% for (let id in urls) { %>
+          <% for (const shortURL in urls) { %>
             <tr>
-              <td><%= id %></td>
-              <td><%= urls[id] %></td>
+              <td><%= shortURL %></td>
+              <td><%= urls[shortURL] %></td>
+              <td><form action="/urls/<%= shortURL %>/delete" method="POST">
+                <input type="submit" value="Delete">
+              </form> </td>
             </tr>
           <% } %>
+          
         </tbody>
       </table>
     </main>
@@ -74,5 +78,6 @@
       integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
       crossorigin="anonymous"
     ></script>
+    
   </body>
 </html>
