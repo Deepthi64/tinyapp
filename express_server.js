@@ -4,6 +4,7 @@ const port = 3000;
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
 
+
 function generateRandomString() {
   const chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
   let result = '';
@@ -41,13 +42,38 @@ app.post("/urls", (req, res) => {
   res.redirect(302, `/urls/${shortURL}`);
 });
 
-app.post("/urls/:longURL/delete", (req, res) => {
-  const shortURL = req.params.longURL;
+app.post("/urls/:shortURL/delete", (req, res) => {
+  const shortURL = req.params.shortURL;
   if (!urlDatabase[shortURL]) {
     res.sendStatus(404);
   } else {
     delete urlDatabase[shortURL];
     res.redirect("/urls");
+  }
+});
+
+app.post("/urls/:shortURL/update", (req, res) => {
+  const shortURL = req.params.shortURL;
+  if (!urlDatabase[shortURL])  {
+    res.sendStatus(404);
+  } else {
+    const newLongURL = req.body.longURL;
+    urlDatabase[shortURL] = newLongURL;
+   // console.log(`old url is set to: ${urlDatabase[shortURL].longURL}`);
+    console.log(`newLongURL is set to : ${newLongURL}`);
+    console.log(`shortURL is set to: ${shortURL}`);
+    console.log("url database", urlDatabase);
+    res.redirect("/urls");
+  }
+});
+app.get("/urls/:shortURL/edit", (req, res) => {
+  const shortURL = req.params.shortURL;
+  const longURL = urlDatabase[shortURL];
+  const templateVars = {longURL, id:shortURL}
+  if (!longURL) {
+    res.sendStatus(404);
+  } else {
+    res.render("urls_show", templateVars);
   }
 });
 app.get("/urls/:shortURL", (req, res) => {
@@ -60,10 +86,6 @@ app.get("/urls/:shortURL", (req, res) => {
     res.render("urls_show", templateVars);
   }
 });
-
-
-
-
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });
