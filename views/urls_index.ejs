@@ -55,8 +55,8 @@
           <% for (const shortURL in urls) { %>
             <tr>
               <td><%= shortURL %></td>
-              <td><%= urls[shortURL] %></td>
-              <td> <form action="/urls/<%= shortURL %>/edit" method="GET">
+              <td><%= urls[shortURL].longURL %></td>
+              <td> <form action="/urls/<%= shortURL %>" method="GET">
                 <button type="submit">Edit</button></form></td>
                <td>
               <form action="/urls/<%= shortURL %>/delete" method="POST">
