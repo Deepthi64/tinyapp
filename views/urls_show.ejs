@@ -22,7 +22,7 @@
             <%= shortURL %>
           </a>
         </p>
-        <form method="post" action="/urls/<%= shortURL %>">
+        <form method="post" action="/urls/<%= shortURL %>/edit">
           <div class="form-group">
             <label for="longURL">New Long URL</label>
             <input type="url" class="form-control" id="longURL" name="longURL" value="<%= longURL %>" required>
