@@ -1,9 +1,9 @@
 const { assert } = require('chai');
 
-const { getUserByEmail } = require('../views/helpers.js');
-const { urlsForUser } = require('../views/helpers.js');
-const { getUserById } = require('../views/helpers.js');
-const { generateRandomString } = require('../views/helpers.js');
+const { getUserByEmail } = require('../helpers/helpers.js');
+const { urlsForUser } = require('../helpers/helpers.js');
+const { getUserById } = require('../helpers/helpers.js');
+const { generateRandomString } = require('../helpers/helpers.js');
 
 const testUsers = {
   "userRandomID": {
@@ -49,15 +49,15 @@ describe('getUserByEmail', function() {
 const testUrls = {
   'reen': {
     longURL: 'http://www.freecodecamp.org',
-    userID: 'carol'
+    userId: 'carol'
   },
   'jon': {
     longURL: 'http://www.reddit.com',
-    userID: 'diya'
+    userId: 'diya'
   },
   'matt': {
     longURL: 'http://www.lighthouselabs.ca',
-    userID: 'diya'
+    userId: 'diya'
   }
 };
 
@@ -66,14 +66,15 @@ describe('urlsForUser', function() {
   it('should return an object of url information specific to the given user ID', function() {
     const actual = urlsForUser("diya", testUrls);
     const expectedOutput = {
-      "bfjqot": {
-        longUrl: "http://www.lighthouselabs.ca",
-        userID: "diya"
+      "jon": {
+        longURL: "http://www.reddit.com",
+        userId: "diya"
       },
-      "htlams": {
-        longUrl: "http://www.redditt.com",
-        userID: "diya"
+      "matt": {
+        longURL: "http://www.lighthouselabs.ca",
+        userId: "diya"
       }
+     
     };
     assert.deepEqual(actual, expectedOutput);
   });

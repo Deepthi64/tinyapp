@@ -6,6 +6,7 @@ function generateRandomString() {
   }
   return result;
 }
+
 function getUserByEmail(email, users) {
   
   for (const userId in users) {
@@ -15,6 +16,7 @@ function getUserByEmail(email, users) {
   }
   return  undefined;
 }
+
 function getUserById(id,users) {
   
   for (const userId in users) {
