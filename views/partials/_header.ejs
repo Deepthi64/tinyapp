@@ -16,23 +16,22 @@
       <a class="nav-item nav-link" href="/urls">My URLs</a>
       <a class="nav-item nav-link" href="/urls/new">Create New URL</a>
     </div>
-    <div class="navbar-nav">
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
       <% if (typeof user === 'undefined' || !user) { %>
-        <li class="nav-item">
+       
           <a class="nav-link" href="/register" style="margin: 1em;">Register</a>
-        </li>
-        <li class="nav-item">
+       
           <a class="nav-link" href="/login" style="margin: 1em;">Login</a>
-        </li>
+       
       <% } else { %>
-        <li class="nav-item">
+       
           <form method="POST" action="/logout" class="form-inline">
             <div class="form-group form-inline">
               <label class="navbar-text">Logged In As <%= user.email %></label>
-              <button type="submit" class="btn btn-outline-light" style="margin-left: 1em;">Logout</button>
+              <button type="submit" class="btn btn-outline-light ml-2" style="margin-left: 1em;">Logout</button>
             </div>
           </form>
-        </li>
+      
       <% } %>
     </div>
   </div>

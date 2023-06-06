@@ -42,13 +42,13 @@
         </tr>
       </thead>
       <tbody>
-        <% for (const shortURL in urls) { %>
+        <% Object.keys(urlDatabase).forEach((shortURL) => { %>
           <tr>
             <td>
-              <%= shortURL %>
+              <a href="/u/<%= shortURL %>"><%= shortURL %></a>
             </td>
             <td>
-              <%= urls[shortURL].longURL %>
+              <%= urlDatabase[shortURL].longURL %>
             </td>
             <td>
               <form action="/urls/<%= shortURL %>" method="GET">
@@ -61,7 +61,7 @@
               </form>
             </td>
           </tr>
-          <% } %>
+          <% }) %>
 
       </tbody>
     </table>
