@@ -21,16 +21,19 @@ app.use(cookieSession({
   maxAge: 24 * 60 * 60 * 1000 
 }));
 
+
+// GET /urls - Display the list of URLs
 app.get('/urls', (req, res) => {
   const userId = req.session.user_id;
   if (!userId) {
    return res.send("<p>Please login to view this page!.Click on <a href = '/login'>this</a> link</p>");
   }
     const urls = urlsForUser(userId, urlDatabase);
-    const templateVars = { urls, user: users[userId] };
-    res.render('urls_index', templateVars);
+    const templateVars = { urls, user: users[userId] , urlDatabase };
+    res.render('urls_index',templateVars);
   });
 
+  // GET /urls/new - Display the form to create a new URL
   app.get("/urls/new", (req, res) => {
     const user = getUserById(req.session.user_id,users);
     if (!user) {
@@ -40,7 +43,8 @@ app.get('/urls', (req, res) => {
     const templateVars = { user, error: "" };
     res.render("urls_new", templateVars);
   });
-
+  
+  // GET /register - Display the registration form
   app.get('/register', (req, res) => {
     const userId = req.session.user_id;
     const user = getUserById(userId, users);
@@ -52,7 +56,8 @@ app.get('/urls', (req, res) => {
   
     res.render('register' );
   });
-
+  
+  // GET /urls/:shortURL/edit - Display the form to edit a URL
   app.get("/urls/:shortURL/edit", (req, res) => {
     const user = users[req.session.user_id];
     const shortURL = req.params.shortURL;
@@ -70,6 +75,16 @@ app.get('/urls', (req, res) => {
     res.render("urls_edit", templateVars);
   });
 
+  // GET / - Redirect to the appropriate page based on the user's login status
+  app.get('/', (req, res) => {
+    const userId = req.session.user_id;
+    if (userId) {
+      res.redirect('/urls');
+    } 
+      res.redirect('/login');
+    });
+
+  // GET /login - Display the login form
   app.get('/login', (req, res) => {
     const userId = req.session.user_id;
     const user = getUserById(userId, users);
@@ -79,7 +94,8 @@ app.get('/urls', (req, res) => {
     } 
      res.render('login');
     });
-
+    
+    // GET /urls/:shortURL - Display details of a specific URL
     app.get('/urls/:shortURL', (req, res) => {
       const shortURL = req.params.shortURL;
       const url = urlDatabase[shortURL];
@@ -96,6 +112,7 @@ app.get('/urls', (req, res) => {
       res.render("urls_show", { shortURL, longURL: url.longURL, user });
     });
 
+   // Redirects to the original long URL based on the provided shortened URL ID
     app.get('/u/:id', (req, res) => {
       const id = req.params.id;
       const url = urlDatabase[id];
@@ -107,15 +124,13 @@ app.get('/urls', (req, res) => {
       res.redirect(url.longURL);
       });
 
+      // Displays a logout success message with a link to the login page
       app.get('/logout', (req, res) => {
         res.send('Log out successful. <a href ="/login">login here</a>');
       });
       
-      
-
-
-      
-  app.post("/urls", (req, res) => {
+    // Creates a new short URL
+    app.post("/urls", (req, res) => {
     const userId = req.session.user_id;
     if (!userId) {
      return res.status(401).send("You need to be logged in to create short URLs.");
@@ -126,6 +141,7 @@ app.get('/urls', (req, res) => {
       res.redirect(`/urls/${shortURL}`);
     });
 
+    // Handles user login
     app.post('/login', (req, res) => {
       const { email, password } = req.body;
       const user = getUserByEmail(email, users);
@@ -142,12 +158,14 @@ app.get('/urls', (req, res) => {
       
     });
 
+    // Handles user logout
     app.post('/logout', (req, res) => {
       req.session = null;
       res.clearCookie('user_id');
       res.redirect('/logout');
     });
 
+    // Registers a new user
     app.post('/register', (req, res) => {
       const { email, password } = req.body;
       const user = getUserByEmail(email,users);
@@ -167,6 +185,7 @@ app.get('/urls', (req, res) => {
         res.redirect('/urls');
       }); 
 
+      // Edits longURL 
       app.post("/urls/:shortURL/edit", (req, res) => {
         const user = users[req.session.user_id];
         const shortURL = req.params.shortURL;
@@ -200,7 +219,8 @@ app.get('/urls', (req, res) => {
         url.longURL = req.body.longURL;
         res.redirect('/urls');
      });
-         
+    
+     // Deletes the url 
      app.post('/urls/:shortUrl/delete', (req, res) => {
      const userId = req.session.user_id;
      const shortUrl = req.params.shortUrl;
